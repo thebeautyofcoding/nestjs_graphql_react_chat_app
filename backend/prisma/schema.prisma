@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int             @id @default(autoincrement())
+  fullname        String
+  avatarUrl       String?
+  email           String          @unique
+  emailVerifiedAt DateTime?
+  password        String
+  rememberToken   String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  chatrooms       Chatroom[]      @relation("ChatroomUsers")
+  messages        Message[]
+  ChatroomUsers   ChatroomUsers[]
+}
+
+model Chatroom {
+  id            Int             @id @default(autoincrement())
+  name          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  users         User[]          @relation("ChatroomUsers")
+  messages      Message[]
+  ChatroomUsers ChatroomUsers[]
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  content    String
+  imageUrl   String?
+  userId     Int
+  chatroomId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatroom   Chatroom @relation(fields: [chatroomId], references: [id], onDelete: Cascade)
+}
+
+model ChatroomUsers {
+  chatroomId Int
+  userId     Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatroom   Chatroom @relation(fields: [chatroomId], references: [id], onDelete: Cascade)
+
+  @@id([chatroomId, userId])
+}

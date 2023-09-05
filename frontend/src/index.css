@@ -1,0 +1,36 @@
+
+
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+
+
+  max-width: 100%;
+
+
+
+
+}
+a {
+  text-decoration: none;
+
+}
+*{
+
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+
+}
+
+div{
+  
+  max-width: 100%;
+}
+ul{
+  max-width: 100%;
+}

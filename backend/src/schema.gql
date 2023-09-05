@@ -1,0 +1,91 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Chatroom {
+  createdAt: DateTime
+  id: ID
+  messages: [Message!]
+  name: String
+  updatedAt: DateTime
+  users: [User!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginDto {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  user: User!
+}
+
+type Message {
+  chatroom: Chatroom
+  content: String
+  createdAt: DateTime
+  id: ID
+  imageUrl: String
+  updatedAt: DateTime
+  user: User
+}
+
+type Mutation {
+  addUsersToChatroom(chatroomId: Float!, userIds: [Float!]!): Chatroom!
+  createChatroom(name: String!): Chatroom!
+  deleteChatroom(chatroomId: Float!): String!
+  enterChatroom(chatroomId: Float!): Boolean!
+  leaveChatroom(chatroomId: Float!): Boolean!
+  login(loginInput: LoginDto!): LoginResponse!
+  logout: String!
+  refreshToken: String!
+  register(registerInput: RegisterDto!): RegisterResponse!
+  sendMessage(chatroomId: Float!, content: String!, image: Upload): Message!
+  updateProfile(file: Upload, fullname: String!): User!
+  userStartedTypingMutation(chatroomId: Float!): User!
+  userStoppedTypingMutation(chatroomId: Float!): User!
+}
+
+type Query {
+  getChatroomsForUser(userId: Float!): [Chatroom!]!
+  getMessagesForChatroom(chatroomId: Float!): [Message!]!
+  getUsersOfChatroom(chatroomId: Float!): [User!]!
+  hello: String!
+  searchUsers(fullname: String!): [User!]!
+}
+
+input RegisterDto {
+  confirmPassword: String!
+  email: String!
+  fullname: String!
+  password: String!
+}
+
+type RegisterResponse {
+  user: User
+}
+
+type Subscription {
+  liveUsersInChatroom(chatroomId: Float!): [User!]
+  newMessage(chatroomId: Float!): Message
+  userStartedTyping(chatroomId: Float!, userId: Float!): User
+  userStoppedTyping(chatroomId: Float!, userId: Float!): User
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type User {
+  avatarUrl: String
+  createdAt: DateTime
+  email: String!
+  fullname: String!
+  id: Float
+  password: String
+  updatedAt: DateTime
+}
